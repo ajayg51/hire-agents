@@ -35,8 +35,6 @@ public class LeadDto {
 
     private LocalDateTime createdAt;
 
-    
-    @Nonnull
     private String createdBy;
 
     

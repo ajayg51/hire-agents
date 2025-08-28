@@ -3,6 +3,7 @@ package com.example.mrec.mrec_demo.controllers;
 import java.net.URI;
 import java.time.LocalDateTime;
 
+import org.apache.tomcat.util.http.parser.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ import jakarta.validation.constraints.Pattern;
 
 @Validated
 @RestController
-@RequestMapping("/api/lead")
+@RequestMapping(path = "/api/lead")
 public class LeadController {
     private final Logger log = LoggerFactory.getLogger(LeadController.class);
     

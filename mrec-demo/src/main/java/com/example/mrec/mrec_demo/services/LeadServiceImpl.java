@@ -60,8 +60,6 @@ public class LeadServiceImpl implements LeadServiceIntf{
 
                 Lead lead2 = LeadMapper.dtoToLead(leadDto);
                 
-                lead2.setCreatedAt(LocalDateTime.now());
-        
                 leadRepository.save(lead2);
 
                 
