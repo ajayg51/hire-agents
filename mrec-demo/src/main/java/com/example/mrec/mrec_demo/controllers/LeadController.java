@@ -3,7 +3,6 @@ package com.example.mrec.mrec_demo.controllers;
 import java.net.URI;
 import java.time.LocalDateTime;
 
-import org.apache.tomcat.util.http.parser.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +21,17 @@ import com.example.mrec.mrec_demo.dtos.ResponseDto;
 import com.example.mrec.mrec_demo.services.LeadServiceImpl;
 import com.example.mrec.mrec_demo.utils.ResponseMessageStrConsts;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Pattern;
 
+@Tag(
+    name = "REST APIs related to Lead"
+)
 @Validated
 @RestController
 @RequestMapping(path = "/api/lead")
@@ -38,20 +46,42 @@ public class LeadController {
 
     /***
      * 
-     * @param leadId
-     * @return leadDedupeDto with true and msg if lead exists
-     * else @return leadDedupeDto with false and msg to create a new lead
+     * @param String
+     * if lead exists
+     * @return ResponseEntity<LeadDedupeDto> with true status
+     *
+     * else
+     * @return ResponseEntity<LeadDedupeDto> with false status and msg as create a new lead
      * 
      */
 
+    @Operation(
+        summary = "Checks for duplicate lead",
+        description = "For given mobile no. as lead id, it checks for duplicate lead"
+    )
+    @ApiResponses(
+        {
+            @ApiResponse(
+                responseCode = "200",
+                description = "HTTP status OK",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = LeadDedupeDto.class
+                    )
+                )
+                    
+            )
+        }
+    )
 
     @GetMapping("/dedupe/{id}")
     public ResponseEntity<LeadDedupeDto> leadDedupeCheck(
        @Pattern (regexp = "^\\d{10}$", message = "Mobile no. should be 10 digit")
        @PathVariable("id") String leadId
     ){
-        boolean isLeadFound = leadService.isLeadExist(leadId);
         LeadDedupeDto leadDedupeDto = new LeadDedupeDto();
+
+        boolean isLeadFound = leadService.isLeadExist(leadId);
 
         if(isLeadFound){
             leadDedupeDto.setLeadExist(true);
@@ -72,11 +102,32 @@ public class LeadController {
      * Creates a lead with unique leadId (mobile no)
      * checks for duplicate leadId before creating a new one
      * 
-     * @param leadDto
-     * @param webRequest
+     * @param LeadDto
+     * @param WebRequest
      * 
-     * @return ResponseEntity as badRequest for failure and created for success
+     * 
+     * @return ResponseEntity<ResponseDto> 
+     * 
+     * 
      */
+
+    @Operation(
+        summary = "Creates a new lead",
+        description = "Creates a new lead after checking for duplicate lead id"
+    )
+    @ApiResponses(
+        {
+            @ApiResponse(
+                responseCode = "201",
+                description = "HTTP status CREATED",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ResponseDto.class
+                    )
+                )
+            )
+        }
+    )
 
     @PostMapping("/create")
     public ResponseEntity<ResponseDto> createLead(
@@ -104,13 +155,35 @@ public class LeadController {
     /**
      * Finds and returns lead for given leadId
      * 
-     * @param leadId
-     * @return ResponseEntity as badRequest for failure and ok for success
+     * @param String
+     * @return ResponseEntity<LeadDto>
+     * 
+     *  
      */
+
+     
+    @Operation(
+        summary = "Fetches lead details",
+        description = "Finds and returns lead for given lead id"
+    )
+    @ApiResponses(
+        {
+            @ApiResponse(
+                responseCode = "200",
+                description = "HTTP status OK",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = LeadDto.class
+                    )
+                )
+            )
+        }
+    )
 
     @GetMapping("/{id}")
     public ResponseEntity<LeadDto> getLead(
-        @PathVariable("id") String leadId
+       @Pattern (regexp = "^\\d{10}$", message = "Mobile no. should be 10 digit")    
+       @PathVariable("id") String leadId
     ){
         LeadDto leadDto = leadService.getLead(leadId);
       

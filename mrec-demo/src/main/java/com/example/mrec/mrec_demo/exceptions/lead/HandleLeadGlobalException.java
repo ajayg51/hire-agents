@@ -11,11 +11,30 @@ import org.springframework.web.context.request.WebRequest;
 
 import com.example.mrec.mrec_demo.dtos.ErrorResponseDto;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestControllerAdvice
 public class HandleLeadGlobalException {
 
     Logger log = LoggerFactory.getLogger(HandleLeadGlobalException.class);
 
+    /***
+     * 
+     * It gets triggered whenever there is exception thrown 
+     * related to Lead Service class
+     * 
+     * @param LeadGlobalException
+     * @return ResponseEntity<ErrorResponseDto>
+     * 
+     * 
+     */
+
+
+    
     @ExceptionHandler(LeadGlobalException.class)
     public ResponseEntity<ErrorResponseDto> handleLeadGlobalException(
         LeadGlobalException e,
@@ -32,6 +51,19 @@ public class HandleLeadGlobalException {
         return ResponseEntity.badRequest().body(errorResponseDto);
 
     }
+
+
+    /***
+     * 
+     * It gets triggered whenever there is exception thrown 
+     * related to LeadCreation process
+     * 
+     * @param LeadCreationException
+     * @return ResponseEntity<ErrorResponseDto>
+     * 
+     * 
+     */
+
     
     @ExceptionHandler(LeadCreationException.class)
     public ResponseEntity<ErrorResponseDto> handleLeadCreationException(
@@ -49,6 +81,20 @@ public class HandleLeadGlobalException {
         return ResponseEntity.badRequest().body(errorResponseDto);
     }
 
+    
+
+    /***
+     * 
+     * It gets triggered whenever there is exception thrown 
+     * related to LeadCreation process when duplicate lead is found
+     * 
+     * @param DuplicateLeadFoundException
+     * @return ResponseEntity<ErrorResponseDto>
+     * 
+     * 
+     */
+
+    
     @ExceptionHandler(DuplicateLeadFoundException.class)
     public ResponseEntity<ErrorResponseDto> handleDuplicateLeadFoundException(
         DuplicateLeadFoundException e,
@@ -68,6 +114,20 @@ public class HandleLeadGlobalException {
         
     }
 
+
+    
+    /***
+     * 
+     * It gets triggered whenever there is exception thrown while
+     * looking for a lead id
+     * 
+     * @param LeadNotFoundException
+     * @return ResponseEntity<ErrorResponseDto>
+     * 
+     * 
+     */
+
+   
     
     @ExceptionHandler(LeadNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> handleLeadNotFoundException(
