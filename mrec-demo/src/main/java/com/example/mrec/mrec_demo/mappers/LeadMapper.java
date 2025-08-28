@@ -25,6 +25,7 @@ public class LeadMapper {
         leadDto.setLocation(lead.getLocation());
         leadDto.setDob(lead.getDob());
         leadDto.setSource(lead.getSource());
+        leadDto.setCreatedAt(lead.getCreatedAt());
         leadDto.setCreatedBy(lead.getCreatedBy());
 
         return leadDto;
