@@ -46,9 +46,9 @@ public class LeadServiceImpl implements LeadServiceIntf{
 
     public void createLead(LeadDto leadDto) {
 
-        Optional<Lead> lead = leadRepository.findById(leadDto.getLeadId());
+        boolean isLeadFound = isLeadExist(leadDto.getLeadId());
         
-        if(lead.isPresent()){
+        if(isLeadFound){
             log.info("Duplicate lead found");
 
             throw new DuplicateLeadFoundException("A lead with given lead id already exists");
@@ -89,5 +89,21 @@ public class LeadServiceImpl implements LeadServiceIntf{
         LeadDto leadDto = LeadMapper.leadToDto(lead);
 
         return leadDto;
+    }
+
+    /***
+     *  @{inheritDoc} 
+     * 
+     */
+
+    @Override
+    public boolean isLeadExist(String leadId) {
+        Optional<Lead> lead = leadRepository.findById(leadId);
+
+        if(lead.isPresent()){
+            return true;
+        }
+
+        return false;
     }
 }

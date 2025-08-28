@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
+import com.example.mrec.mrec_demo.dtos.LeadDedupeDto;
 import com.example.mrec.mrec_demo.dtos.LeadDto;
 import com.example.mrec.mrec_demo.dtos.ResponseDto;
 import com.example.mrec.mrec_demo.services.LeadServiceImpl;
 import com.example.mrec.mrec_demo.utils.ResponseMessageStrConsts;
+
+import jakarta.validation.constraints.Pattern;
 
 @Validated
 @RestController
@@ -35,19 +38,32 @@ public class LeadController {
     /***
      * 
      * @param leadId
-     * @return LeadDto if lead duplicate is found
-     * else throws LeadNotFoundException
+     * @return leadDedupeDto with true and msg if lead exists
+     * else @return leadDedupeDto with false and msg to create a new lead
      * 
      */
 
 
     @GetMapping("/dedupe/{id}")
-    public ResponseEntity<LeadDto> leadDedupeCheck(
-        @PathVariable("id") String leadId
+    public ResponseEntity<LeadDedupeDto> leadDedupeCheck(
+       @Pattern (regexp = "^\\d{10}$", message = "Mobile no. should be 10 digit")
+       @PathVariable("id") String leadId
     ){
-        LeadDto leadDto = leadService.getLead(leadId);
+        boolean isLeadFound = leadService.isLeadExist(leadId);
+        LeadDedupeDto leadDedupeDto = new LeadDedupeDto();
 
-        return ResponseEntity.ok().body(leadDto);
+        if(isLeadFound){
+            leadDedupeDto.setLeadExist(true);
+            leadDedupeDto.setMessage("Lead already exists for id "+leadId);
+
+            return ResponseEntity.ok().body(leadDedupeDto);
+        }
+        
+        leadDedupeDto.setLeadExist(false);
+        leadDedupeDto.setMessage("Please create a new lead for "+leadId);
+
+
+        return ResponseEntity.ok().body(leadDedupeDto);
     }
     
     /***

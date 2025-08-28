@@ -27,4 +27,12 @@ public interface LeadServiceIntf {
      */
     
     public LeadDto getLead(String leadId);   
+
+    /***
+     * Checks for duplicate lead in DB for given leadId
+     * @param leadId
+     * @return true if lead exists else false
+     */
+
+    public boolean isLeadExist(String leadId);
 }
