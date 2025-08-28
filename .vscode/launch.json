@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "mrec demo",
+      "request": "launch",
+      "mainClass": "com.example.mrec.mrec_demo.MrecDemoApplication",
+      "projectName": "mrec-demo",
+      "args": "",
+      "env": {
+        "APP_NAME": "Mrec Demo",
+        "DB_USERNAME": "postgres",
+        "DB_PASSWORD": "root",
+        "DS_URL": "jdbc:postgresql://localhost:5432/mrec"
+      }
+    }
+  ]
+}
