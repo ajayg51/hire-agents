@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
+import com.example.mrec.mrec_demo.dtos.ErrorResponseDto;
 import com.example.mrec.mrec_demo.dtos.LeadDedupeDto;
 import com.example.mrec.mrec_demo.dtos.LeadDto;
 import com.example.mrec.mrec_demo.dtos.ResponseDto;
@@ -125,7 +126,19 @@ public class LeadController {
                         implementation = ResponseDto.class
                     )
                 )
+            ),
+
+            
+            @ApiResponse(
+                responseCode = "400",
+                description = "HTTP status BAD REQUEST",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponseDto.class
+                    )
+                )
             )
+
         }
     )
 
@@ -174,6 +187,16 @@ public class LeadController {
                 content = @Content(
                     schema = @Schema(
                         implementation = LeadDto.class
+                    )
+                )
+            ),
+            
+            @ApiResponse(
+                responseCode = "400",
+                description = "HTTP status BAD REQUEST",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponseDto.class
                     )
                 )
             )
