@@ -42,7 +42,7 @@ public class HandleLeadGlobalException {
 
         log.error(errorResponseDto.toString());
 
-        return ResponseEntity.badRequest().body(errorResponseDto);
+        return ResponseEntity.internalServerError().body(errorResponseDto);
 
     }
 

@@ -71,7 +71,20 @@ public class LeadController {
                     )
                 )
                     
-            )
+            ),
+
+            @ApiResponse(
+                responseCode = "500",
+                description = "HTTP status INTERNAL SERVER ERROR",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponseDto.class
+                    )
+                )
+                    
+            ),
+
+
         }
     )
 
@@ -137,7 +150,18 @@ public class LeadController {
                         implementation = ErrorResponseDto.class
                     )
                 )
-            )
+            ),
+
+            @ApiResponse(
+                responseCode = "500",
+                description = "HTTP status INTERNAL SERVER ERROR",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponseDto.class
+                    )
+                )
+                    
+            ),
 
         }
     )
@@ -199,6 +223,17 @@ public class LeadController {
                         implementation = ErrorResponseDto.class
                     )
                 )
+            ),
+
+            @ApiResponse(
+                responseCode = "500",
+                description = "HTTP status INTERNAL SERVER ERROR",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponseDto.class
+                    )
+                )
+                    
             )
         }
     )

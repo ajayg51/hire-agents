@@ -80,12 +80,16 @@ public class LeadServiceImpl implements LeadServiceIntf{
 
     @Override
     public LeadDto getLead(String leadId) {
-        Lead lead = leadRepository.findById(leadId)
-            .orElseThrow(() -> new LeadNotFoundException(ResponseMessageStrConsts.leadNotFound + leadId));
-        
-        LeadDto leadDto = LeadMapper.leadToDto(lead);
-
-        return leadDto;
+        try {
+            Lead lead = leadRepository.findById(leadId)
+                .orElseThrow(() -> new LeadNotFoundException(ResponseMessageStrConsts.leadNotFound + leadId));
+            
+            LeadDto leadDto = LeadMapper.leadToDto(lead);
+    
+            return leadDto;
+        } catch (Exception e) {
+            throw new LeadGlobalException(e.getMessage());
+        }
     }
 
     /***
@@ -95,12 +99,17 @@ public class LeadServiceImpl implements LeadServiceIntf{
 
     @Override
     public boolean isLeadExist(String leadId) {
-        Optional<Lead> lead = leadRepository.findById(leadId);
+        try {
+            Optional<Lead> lead = leadRepository.findById(leadId);
+    
+            if(lead.isPresent()){
+                return true;
+            }
+            
+            return false;
 
-        if(lead.isPresent()){
-            return true;
+        } catch (Exception e) {
+            throw new LeadGlobalException(e.getMessage());
         }
-
-        return false;
     }
 }
